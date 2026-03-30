@@ -9,7 +9,7 @@ local is_win = vim.loop.os_uname().version:find "Windows"
 
 -- Native utility functions to replace lspconfig.util
 local function root_pattern(...)
-  local patterns = vim.tbl_flatten { ... }
+  local patterns = vim.iter(...):flatten():totable()
   return function(startpath)
     local found = vim.fs.find(patterns, {
       path = startpath,
@@ -31,12 +31,12 @@ local function bufname_valid(bufname)
   if bufname == "" or bufname == nil then
     return false
   end
-  
+
   -- Check if it's a valid file path or URI
   if vim.startswith(bufname, "file://") then
     return true
   end
-  
+
   -- Check if it's a regular file path
   local stat = vim.loop.fs_stat(bufname)
   return stat ~= nil or vim.fn.filereadable(bufname) == 1
