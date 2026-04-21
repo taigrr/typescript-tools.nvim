@@ -9,7 +9,7 @@ local is_win = vim.loop.os_uname().version:find "Windows"
 
 -- Native utility functions to replace lspconfig.util
 local function root_pattern(...)
-  local patterns = vim.tbl_flatten { ... }
+  local patterns = vim.iter({ ... }):flatten():totable()
   return function(startpath)
     local found = vim.fs.find(patterns, {
       path = startpath,
